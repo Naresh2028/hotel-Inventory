@@ -1,10 +1,34 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, Optional, ViewChild, ViewContainerRef } from '@angular/core';
+import { LoggerService } from './logger.service';
+import { LocalStorageToken } from './localstorage.token';
+import { InitService } from './init.service';
 
 @Component({
-  selector: 'app-root',
+  selector: 'hinv-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
+  //styles:['h1{color:red}']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit, OnInit {
   title = 'hotelinventary';
+
+
+  constructor(@Optional() private loggerService: LoggerService,
+    @Inject(LocalStorageToken) private localStorage: any,
+  private initService:InitService) {
+    console.log(this.initService.config);
+  }
+
+  ngAfterViewInit() { }
+
+  @ViewChild('name', { static: true }) name!: ElementRef;
+
+  ngOnInit() {
+    this.loggerService?.Log('AppComponent.ngOnInit()');
+    //this.name.nativeElement.innerText = 'Hilton Hotel';
+
+    console.log(this.localStorage.setItem('name', 'Hilton Hotel'));
+  }
+
+
 }
