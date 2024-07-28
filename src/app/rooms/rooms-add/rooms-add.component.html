@@ -1,0 +1,96 @@
+
+<!-- {{roomsForm.pristine | json}}
+{{roomsForm.dirty | json}}
+{{roomsForm.valid | json}}
+{{roomsForm.invalid | json}}
+{{roomsForm.value | json}} -->
+
+<div *ngIf="successMessage !== ''" class="alert alert-success">
+  {{successMessage}}
+</div>
+
+<form #roomsForm="ngForm" (ngSubmit)="AddRoom(roomsForm)">
+  <div class="form-group">
+    <input
+      class="form-control"
+      [(ngModel)]="room.roomType"
+      type="text"
+      required
+      name="roomType"
+      placeholder="Room type"
+      [ngModelOptions]="{updateOn:'blur'}"
+    />
+  </div>
+  <div class="form-group">
+    <input
+      class="form-control"
+      #roomsamanities="ngModel"
+      [(ngModel)]="room.amenities"
+      type="text"
+      minlength="5"
+      maxlength="20"
+      required
+      name="amenities"
+      placeholder="Amenities"
+    />
+  </div>
+  <div class="alert alert-danger" *ngIf="roomsamanities.errors?.['minlength']">
+    amenities should be min 5 characters
+  </div>
+  <div class="form-group">
+    <input
+      class="form-control"
+      [(ngModel)]="room.price"
+      type="number"
+      name="price"
+      required
+      placeholder="Room price per night"
+    />
+  </div>
+  <div class="form-group">
+    <input
+      class="form-control"
+      [(ngModel)]="room.photos"
+      type="text"
+      name="photos"
+      required
+      placeholder="photos(Provide Link)"
+    />
+  </div>
+  <div class="form-group">
+    <input
+      class="form-control"
+      [(ngModel)]="room.checkInTime"
+      type="datetime"
+      name="checkInTime"
+      required
+      placeholder="check-In Time"
+    />
+  </div>
+  <div class="form-group">
+    <input
+      class="form-control"
+      [(ngModel)]="room.checkOutTime"
+      type="datetime"
+      required
+      name="checkOutnTime"
+      placeholder="check-out Time"
+    />
+  </div>
+  <div class="form-group"></div>
+  <input
+    class="form-control"
+    [(ngModel)]="room.rating"
+    type="number"
+    min="1"
+    max="5"
+    required
+    name="rating"
+    placeholder="Rating"
+  />
+  <div>
+    <button [disabled]="roomsForm.invalid" class="btn btn-primary" type="submit">
+      Submit
+    </button>
+  </div>
+</form>

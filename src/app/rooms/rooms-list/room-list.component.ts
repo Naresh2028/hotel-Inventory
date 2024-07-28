@@ -6,13 +6,15 @@ import { EventEmitter } from '@angular/core';
   selector: 'hinv-rooms-list',
   templateUrl: './room-list.component.html',
   styleUrls: ['./room-list.component.scss'],
-  changeDetection:ChangeDetectionStrategy.OnPush
+  //changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class RoomsListComponent implements OnInit, OnChanges,OnDestroy {
 
   @Input() rooms:RoomList[] = [];
 
   @Input() title: string = '';
+
+  @Input() price = 0;
 
   @Output() selectedRoom = new EventEmitter<RoomList>();
 

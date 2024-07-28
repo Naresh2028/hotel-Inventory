@@ -4,6 +4,8 @@ import { HeaderComponent } from '../header/header.component';
 import { RoomsService } from './services/rooms.service';
 import { Observable, Subject, Subscription, catchError, map, of, retry } from 'rxjs';
 import { HttpEventType } from '@angular/common/http';
+import { ConfigService } from 'src/services/config.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'hinv-rooms',
@@ -33,7 +35,7 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, AfterView
 
   selectedRoom!: RoomList;
 
-  @ViewChild(HeaderComponent, { static: false }) headerComponent: HeaderComponent = new HeaderComponent;
+  @ViewChild(HeaderComponent, { static: false }) headerComponent: HeaderComponent = new HeaderComponent(this.confgiService);
 
   @ViewChildren(HeaderComponent) headerChildernComponenet!: QueryList<HeaderComponent>
 
@@ -48,22 +50,18 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, AfterView
   );
 
   rooms$ = this.roomsService.getRooms$.pipe(
-    (catchError(
-      (err: string) => {
+    catchError((err) => {
         //console.log(err);
-        this.error$.next(err);
-        return of([])
+        this.error$.next(err.message);
+        return of([]);
       })
-    )
-
   );
 
+  priceFilter = new FormControl(0);
 
 
-  
 
-
-  constructor(@SkipSelf() private roomsService: RoomsService) { }
+  constructor(@SkipSelf() private roomsService: RoomsService,private confgiService:ConfigService) { }
 
 
 
@@ -125,8 +123,6 @@ export class RoomsComponent implements OnInit, DoCheck, AfterViewInit, AfterView
     //     });
 
   }
-
-
 
   ngDoCheck() {
     console.log('changes are detected');

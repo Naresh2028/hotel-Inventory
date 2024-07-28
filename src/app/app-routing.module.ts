@@ -1,12 +1,30 @@
+
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EmployeeComponent } from './employee/employee.component';
-import { RoomsComponent } from './rooms/rooms.component';
+import { NotfoundComponent } from './notfound/notfound.component';
+import { LoginComponent } from './Login/login/login.component';
+import { LoginGuard } from './guards/login.guard';
 
 const routes: Routes = [
-  {path:'employee',component:EmployeeComponent},
-  {path:'rooms',component:RoomsComponent},
-  {path:'',redirectTo:'/rooms',pathMatch:'full'}
+  { path: 'employee', component: EmployeeComponent, canActivate: [LoginGuard] },
+  { path: 'login', component: LoginComponent },
+  {
+    path: 'rooms',
+    loadChildren: () =>
+      import('./rooms/rooms.module').then(m => m.RoomsModule)
+    , canActivate: [LoginGuard]
+    , canLoad: [LoginGuard]
+  },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  {
+    path: 'booking/:roomid',
+    loadChildren: () =>
+      import('./booking/booking.module').then(m => m.BookingModule),
+    //canActivate: [LoginGuard]
+  },
+  { path: 'comments', loadChildren: () => import('../comment/comment.module').then(m => m.CommentModule) },
+  { path: '**', component: NotfoundComponent }
 ];
 
 @NgModule({
